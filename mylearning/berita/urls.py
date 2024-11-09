@@ -21,8 +21,13 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.guest, name='guest'),
+    path('detail/<slug:slug>/', views.detail, name='detail'),
+    path('dashboard/', views.home, name='home'),
     path('add/', views.add_post, name='add_post'),
     path('update/<slug:slug>/', views.update_post, name='update_post'),
     path('delete/<int:pk>/', views.delete_post, name='delete_post'),
+    path('signup/', views.signup_view, name='signup'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 ]

@@ -4,30 +4,175 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Django App</title>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Bootstrap JS Bundle -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .navbar-custom {
+        background-color: #007bff; /* Warna biru yang mencolok */
+      }
+      .navbar-custom .navbar-brand,
+      .navbar-custom .nav-link {
+        color: #fff !important; /* Warna teks putih */
+      }
+      .navbar-custom .nav-link:hover {
+        background-color: #0056b3; /* Warna hover */
+        border-radius: 5px;
+      }
+      .dropdown-menu a:hover {
+        background-color: #f1f1f1;
+        color: #007bff !important;
+      }
+
+      /* Mengatur ukuran container carousel */
+      .carousel-inner {
+        position: relative;
+        overflow: hidden; /* Menyembunyikan bagian gambar yang keluar dari container */
+        width: 100%;
+        height: 300px; /* Menetapkan tinggi maksimal carousel */
+      }
+
+      /* Mengatur ukuran item carousel */
+      .carousel-item {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.5s ease-in-out;
+      }
+
+      /* Mengatur gambar agar tetap terjaga rasio dan rounded */
+      .carousel-item img {
+        width: 100%; /* Membuat gambar memenuhi lebar container */
+        height: 100%; /* Membuat gambar memenuhi tinggi container */
+        object-fit: cover; /* Memastikan gambar tidak terdistorsi */
+        border-radius: 20px; /* Membuat gambar menjadi rounded */
+      }
+
+      /* Atur transisi untuk gambar berikutnya dan sebelumnya */
+      .carousel-item-next,
+      .carousel-item-prev {
+        transform: translateX(50%);
+      }
+
+      .carousel-item.active {
+        transform: translateX(0); /* Gambar yang aktif ditampilkan sepenuhnya */
+      }
+    </style>
   </head>
-  <nav class="navbar bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwOYxM_-5UMnr2yh3EVKOVZ7EyyRCfSddB4Q&s"
-          alt="Logo"
-          width="30"
-          height="24"
-          class="d-inline-block align-text-top rounded"
-        />
-        Moba Gaming
-      </a>
-    </div>
-  </nav>
   <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwOYxM_-5UMnr2yh3EVKOVZ7EyyRCfSddB4Q&s"
+            alt="Logo"
+            width="30"
+            height="30"
+            class="d-inline-block align-text-top rounded"
+          />
+          Moba Gaming
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'guest' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Kontak</a>
+            </li>
+            <!-- Dropdown -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Profile
+              </a>
+
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% if user.is_authenticated %}
+                <!-- If user is authenticated, show Logout -->
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <!-- If user is not authenticated, show Login and Signup -->
+                <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                <li><a class="dropdown-item" href="{% url 'signup' %}">Signup</a></li>
+                {% endif %}
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Konten -->
     <div class="container mt-5">{% block content %} {% endblock %}</div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white mt-5">
+      <div class="container py-5">
+        <div class="row">
+          <!-- About Section -->
+          <div class="col-md-4">
+            <h5>Tentang Kami</h5>
+            <p>
+              Moba Gaming adalah sumber berita terbaru seputar esports, tips & trik, serta update event menarik. Kami
+              berkomitmen memberikan informasi yang akurat dan up-to-date kepada para gamers.
+            </p>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="col-md-4">
+            <h5>Tautan Cepat</h5>
+            <ul class="list-unstyled">
+              <li><a href="{% url 'guest' %}" class="text-white text-decoration-none">Home</a></li>
+              <li><a href="#" class="text-white text-decoration-none">Kontak</a></li>
+            </ul>
+          </div>
+
+          <!-- Social Media & Contact -->
+          <div class="col-md-4">
+            <h5>Ikuti Kami</h5>
+            <div class="d-flex">
+              <a href="#" class="text-white me-3"><i class="bi bi-facebook fs-4"></i></a>
+              <a href="#" class="text-white me-3"><i class="bi bi-twitter fs-4"></i></a>
+              <a href="#" class="text-white me-3"><i class="bi bi-instagram fs-4"></i></a>
+              <a href="#" class="text-white me-3"><i class="bi bi-youtube fs-4"></i></a>
+            </div>
+            <h5 class="mt-4">Kontak</h5>
+            <p><i class="bi bi-envelope"></i> arzy@paynearby.id</p>
+            <p><i class="bi bi-telephone"></i> +62 821 1407 6740</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="text-center py-3 bg-secondary">
+        <small>&copy; 2024 Moba Gaming. All rights reserved.</small>
+      </div>
+    </footer>
   </body>
 </html>

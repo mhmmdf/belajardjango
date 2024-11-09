@@ -30,6 +30,9 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+LOGIN_URL = '/login/'  # Ganti dengan URL login yang sesuai
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -117,6 +120,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Sesuaikan dengan path ke folder static Anda
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
