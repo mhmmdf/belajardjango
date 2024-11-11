@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'category']
 
 
 class SignUpForm(UserCreationForm):
@@ -23,3 +23,12 @@ class SignUpForm(UserCreationForm):
             if commit:
                 User.save()
             return User
+        
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Tulis komentar anda..'})
+        }

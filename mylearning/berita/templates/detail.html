@@ -2,10 +2,35 @@
 <div class="container mt-5">
   <!-- Bagian Konten Utama -->
   <h1 class="mb-4">{{ posts.title }}</h1>
-  <p class="text-muted">{{ posts.created_at|date:"d M Y" }}</p>
+  <p class="text-muted">Diposting pada: {{ posts.created_at|date:"d M Y" }}</p>
   <div class="content mb-5">
     <p>{{ posts.content }}</p>
   </div>
+  <p class="text-muted">
+    Kategori: <span class="text-dark" style="font-weight: bold">{{ posts.category | title }}</span>
+  </p>
+
+  <hr />
+  <h3>Komentar</h3>
+  {% for comment in comments %}
+  <div>
+    Komentar dari: <strong>{{ comment.user.username }}</strong>
+    <p>{{ comment.content }}</p>
+    <small>{{ comment.created_at|date:"d M Y, H:i" }}</small>
+  </div>
+  <hr />
+  {% empty %}
+  <p>Belum ada komentar.</p>
+  {% endfor %} {% if user.is_authenticated %}
+  <h3>Tulis Komentar</h3>
+  <form method="post">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Kirim</button>
+  </form>
+  {% else %}
+  <p>Silakan <a href="{% url 'login' %}?next={{ request.path}}">login</a> untuk berkomentar.</p>
+  {% endif %}
+
   <a href="{% url 'guest' %}" class="btn btn-secondary">Kembali</a>
 
   <!-- Bagian Saran Artikel -->

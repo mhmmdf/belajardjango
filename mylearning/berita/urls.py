@@ -22,6 +22,10 @@ from . import views
 
 urlpatterns = [
     path('', views.guest, name='guest'),
+    path('berita', views.berita, name='berita'),
+    path('bursa_transfer', views.bursa_transfer, name='bursa_transfer'),
+    path('tips', views.tips, name='tips'),
+    path('turnamen', views.turnamen, name='turnamen'),
     path('detail/<slug:slug>/', views.detail, name='detail'),
     path('dashboard/', views.home, name='home'),
     path('add/', views.add_post, name='add_post'),

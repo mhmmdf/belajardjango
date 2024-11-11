@@ -24,7 +24,7 @@
           <td>
             <a href="{% url 'update_post' post.slug %}" style="text-decoration: none"> {{ post.title }} </a>
           </td>
-          <td>{{ post.content }}</td>
+          <td>{{ post.content|truncatewords:50 }}</td>
           <td class="text-center">{{ post.created_at|date:"d M Y" }}</td>
           <td class="text-center">
             <a href="{% url 'delete_post' post.pk %}" class="btn btn-danger"> <i class="bi bi-trash"></i></a>

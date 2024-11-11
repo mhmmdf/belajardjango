@@ -104,18 +104,44 @@
               <a
                 class="nav-link dropdown-toggle"
                 href="#"
-                id="navbarDropdown"
+                id="PostinganDropdown"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Profile
+                Postingan
               </a>
 
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu" aria-labelledby="postinganDropdown">
+                <li><a class="dropdown-item" href="{% url 'berita' %}">Berita</a></li>
+                <li><a class="dropdown-item" href="{% url 'bursa_transfer' %}">Bursa Transfer</a></li>
+                <li><a class="dropdown-item" href="{% url 'tips' %}">Tips</a></li>
+                <li><a class="dropdown-item" href="{% url 'turnamen' %}">Turnamen</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="autentikasiDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {% if user.is_authenticated %} Hei, {{ user.username}} {% else %} Autentikasi {% endif %}
+              </a>
+
+              <ul class="dropdown-menu" aria-labelledby="autentikasiDropdown">
                 {% if user.is_authenticated %}
-                <!-- If user is authenticated, show Logout -->
-                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                <!-- If user is authenticated, show Name & Logout -->
+                <li><a class="dropdown-item">Profile</a></li>
+
+                {% if user.is_staff %}
+                <li><a class="dropdown-item" href="{% url 'home' %}">Admin Panel</a></li>
+                {% endif %}
+
+                <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
                 <!-- If user is not authenticated, show Login and Signup -->
                 <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>

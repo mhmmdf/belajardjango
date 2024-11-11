@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Post
-from .forms import PostForm, SignUpForm
+from .models import *
+from .forms import PostForm, SignUpForm, CommentForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
@@ -15,15 +15,57 @@ def guest(request):
 def detail(request, slug):
     posts = get_object_or_404(Post, slug=slug)
     related_posts = Post.objects.exclude(slug=slug).order_by('?')[:3]
+    comments = posts.comments.all()
+
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = posts
+            comment.user = request.user
+            comment.save()
+            messages.success(request, "Komentar berhasil ditambahkan!")
+            return redirect('detail', slug=posts.slug)
+    else:
+        form = CommentForm()
 
     return render(request, 'detail.html', {
         'posts': posts,
+        'comments': comments,
+        'form': form,
         'related_posts': related_posts})
+
+
+def berita(request):
+    posts = Post.objects.filter(category="berita")
+    return render(request, 'berita.html', {'posts': posts})
+    
+
+def bursa_transfer(request):
+    posts = Post.objects.filter(category="bursa_transfer")
+    return render(request, 'bursa_transfer.html', {'posts': posts})
+
+
+def tips(request):
+    posts = Post.objects.filter(category="tips")
+    return render(request, 'tips.html', {'posts': posts})
+
+
+def turnamen(request):
+    posts = Post.objects.filter(category="turnamen")
+    return render(request, 'turnamen.html', {'posts': posts})
 
 @login_required
 def home(request):
     posts = Post.objects.all().order_by('-created_at')
-    return render(request, 'home.html', {'posts':posts})
+    userLevel = request.user
+    if userLevel.is_staff:
+        return render(request, 'home.html', {'posts':posts})  
+    else:
+        return render(request, 'news.html', {'posts':posts})  
+
+
+
 
 @login_required
 def add_post(request):
@@ -85,7 +127,17 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f'Selamat datang, {username}!')
-                return redirect('home')
+                
+                if user.is_staff:
+                    next_url = request.GET.get('next')
+                    if next_url:
+                        return redirect(next_url)
+                    return redirect('home')
+                else:
+                    next_url = request.GET.get('next')
+                    if next_url:
+                        return redirect(next_url)
+                    return redirect('guest')
             else:
                 messages.error(request, 'Username atau password salah.')
     else:
@@ -97,3 +149,5 @@ def logout_view(request):
     logout(request)
     messages.success(request, 'Anda telah logout.')
     return redirect('login')
+
+
