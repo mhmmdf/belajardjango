@@ -13,8 +13,15 @@
       crossorigin="anonymous"
     ></script>
     <style>
+      * {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+          "Open Sans", "Helvetica Neue", sans-serif;
+      }
       .navbar-custom {
         background-color: #007bff; /* Warna biru yang mencolok */
+        position: sticky;
+        top: 0;
+        z-index: 1000;
       }
       .navbar-custom .navbar-brand,
       .navbar-custom .nav-link {
@@ -64,6 +71,22 @@
       .carousel-item.active {
         transform: translateX(0); /* Gambar yang aktif ditampilkan sepenuhnya */
       }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* Pastikan tinggi halaman minimal sebesar tinggi viewport */
+      }
+
+      .main {
+        flex: 1; /* Membuat area utama fleksibel agar footer selalu di bawah */
+      }
+
+      .footer {
+        position: relative;
+        bottom: 0;
+        margin-top: auto;
+      }
     </style>
   </head>
   <body>
@@ -97,7 +120,7 @@
               <a class="nav-link" href="{% url 'guest' %}">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Kontak</a>
+              <a class="nav-link" href="{% url 'contact' %}">Kontak</a>
             </li>
             <!-- Dropdown -->
             <li class="nav-item dropdown">
@@ -118,6 +141,20 @@
                 <li><a class="dropdown-item" href="{% url 'tips' %}">Tips</a></li>
                 <li><a class="dropdown-item" href="{% url 'turnamen' %}">Turnamen</a></li>
               </ul>
+            </li>
+
+            <!-- Search Form -->
+            <li class="nav-item">
+              <form class="d-flex" action="{% url 'search' %}" method="get">
+                <input
+                  class="form-control me-2"
+                  type="search"
+                  placeholder="Cari Postingan"
+                  aria-label="Search"
+                  name="keyword"
+                />
+                <button class="btn btn-dark text-white" type="submit">Search</button>
+              </form>
             </li>
 
             <li class="nav-item dropdown">
@@ -155,10 +192,10 @@
     </nav>
 
     <!-- Konten -->
-    <div class="container mt-5">{% block content %} {% endblock %}</div>
+    <div class="container main-content mt-5">{% block content %} {% endblock %}</div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white mt-5">
+    <footer class="footer bg-dark text-white mt-5">
       <div class="container py-5">
         <div class="row">
           <!-- About Section -->
@@ -175,7 +212,7 @@
             <h5>Tautan Cepat</h5>
             <ul class="list-unstyled">
               <li><a href="{% url 'guest' %}" class="text-white text-decoration-none">Home</a></li>
-              <li><a href="#" class="text-white text-decoration-none">Kontak</a></li>
+              <li><a href="{% url 'contact' %}" class="text-white text-decoration-none">Kontak</a></li>
             </ul>
           </div>
 
@@ -189,7 +226,7 @@
               <a href="#" class="text-white me-3"><i class="bi bi-youtube fs-4"></i></a>
             </div>
             <h5 class="mt-4">Kontak</h5>
-            <p><i class="bi bi-envelope"></i> arzy@paynearby.id</p>
+            <p><i class="bi bi-envelope"></i> arzy@mobagaming.com</p>
             <p><i class="bi bi-telephone"></i> +62 821 1407 6740</p>
           </div>
         </div>

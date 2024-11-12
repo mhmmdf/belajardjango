@@ -32,3 +32,10 @@ class CommentForm(forms.ModelForm):
         widgets = {
             'content': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Tulis komentar anda..'})
         }
+        
+        
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['fullname', 'email', 'message']
+        

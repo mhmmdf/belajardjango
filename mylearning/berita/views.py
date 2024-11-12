@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
-from .forms import PostForm, SignUpForm, CommentForm
+from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
@@ -8,9 +8,20 @@ from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+def contact(request):
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Pesan berhasil terkirim. Kamu akan menerima balasan melalui email.')
+            return redirect('contact')
+    return render(request, 'contact.html')
+
+
 def guest(request):
     posts = Post.objects.all().order_by('-created_at')
     return render(request, 'news.html', {'posts':posts})
+
 
 def detail(request, slug):
     posts = get_object_or_404(Post, slug=slug)
@@ -55,6 +66,13 @@ def turnamen(request):
     posts = Post.objects.filter(category="turnamen")
     return render(request, 'turnamen.html', {'posts': posts})
 
+
+def search(request):
+    searchQuery = request.GET.get("keyword")
+    posts = Post.objects.filter(title__icontains=searchQuery)
+    return render(request, 'result.html', {'posts': posts, 'query': searchQuery})
+
+
 @login_required
 def home(request):
     posts = Post.objects.all().order_by('-created_at')
@@ -63,8 +81,6 @@ def home(request):
         return render(request, 'home.html', {'posts':posts})  
     else:
         return render(request, 'news.html', {'posts':posts})  
-
-
 
 
 @login_required
@@ -78,6 +94,7 @@ def add_post(request):
         form = PostForm()
     return render(request, 'add_post.html', {'form': form})
 
+
 @login_required
 def update_post(request, slug):
     post = get_object_or_404(Post, slug=slug)
@@ -90,6 +107,7 @@ def update_post(request, slug):
         form = PostForm(instance=post)
     return render(request, 'add_post.html', {'form': form})
 
+
 @login_required
 def delete_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -99,7 +117,6 @@ def delete_post(request, pk):
     return render(request, 'delete_post.html', {'post': post})
 
 
-# View untuk Signup
 def signup_view(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -116,7 +133,7 @@ def signup_view(request):
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
-# View untuk Login
+
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -144,7 +161,7 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
-# View untuk Logout
+
 def logout_view(request):
     logout(request)
     messages.success(request, 'Anda telah logout.')
