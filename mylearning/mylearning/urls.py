@@ -18,6 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.http import HttpResponse
 import debug_toolbar
+from django.conf.urls import handler404
+from django.shortcuts import render
+from berita.views import view_404
+
+handler404 = view_404
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -93,7 +93,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom">
       <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{% url 'guest' %}">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwOYxM_-5UMnr2yh3EVKOVZ7EyyRCfSddB4Q&s"
             alt="Logo"
@@ -172,7 +172,7 @@
               <ul class="dropdown-menu" aria-labelledby="autentikasiDropdown">
                 {% if user.is_authenticated %}
                 <!-- If user is authenticated, show Name & Logout -->
-                <li><a class="dropdown-item">Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
 
                 {% if user.is_staff %}
                 <li><a class="dropdown-item" href="{% url 'home' %}">Admin Panel</a></li>

@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.models import User
 
 # Create your views here.
 def contact(request):
@@ -81,6 +81,24 @@ def home(request):
         return render(request, 'home.html', {'posts':posts})  
     else:
         return render(request, 'news.html', {'posts':posts})  
+    
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html')
+
+
+@login_required
+def profile_edit(request):
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profil berhasil diperbarui!')
+            return redirect('profile_edit')
+    else:
+        form = ProfileForm(instance=request.user)
+    return render(request, 'profile_edit.html', {'form': form})
 
 
 @login_required
@@ -164,7 +182,8 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    messages.success(request, 'Anda telah logout.')
     return redirect('login')
 
 
+def view_404(request, exception):
+    return render(request, "404.html", status=404)

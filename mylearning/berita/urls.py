@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.http import HttpResponse
 from . import views
-
+from django.conf.urls import handler404
 
 urlpatterns = [
     path('', views.guest, name='guest'),
@@ -36,4 +36,6 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('contact/', views.contact, name='contact'),
+    path('profile/', views.profile, name='profile'),
+    path('profile_edit/', views.profile_edit, name='profile_edit'),
 ]

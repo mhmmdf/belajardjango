@@ -1,0 +1,8 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container text-center mt-5">
+  <h1>404</h1>
+  <h2>Oops! Halaman tidak ditemukan</h2>
+  <p>Maaf, halaman yang Anda cari tidak tersedia.</p>
+  <a href="{% url 'guest' %}" class="btn text-primary mt-3">Kembali ke Beranda</a>
+</div>
+{% endblock %}
