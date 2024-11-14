@@ -1,13 +1,17 @@
 {% extends 'base.html' %} {% block content %}
-<div class="container mt-5">
-  {% if messages %} {% for message in messages %}
-  <div class="alert alert-success">{{ message }}</div>
-  {% endfor %} {% endif %}
-  <h2>Ubah Profil</h2>
-  <form method="post">
-    {% csrf_token %} {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Simpan Perubahan</button>
-    <a href="{% url 'profile' %}" class="btn btn-secondary">Kembali</a>
-  </form>
+<div class="container mt-4">
+  <div class="contact-form card shadow-lg rounded-3 mx-auto" style="max-width: 400px">
+    <div class="card-body p-4">
+      {% if messages %} {% for message in messages %}
+      <div class="alert alert-success">{{ message }}</div>
+      {% endfor %} {% endif %}
+      <h3 class="text-center mb-4">Ubah Profil</h3>
+      <form method="post">
+        {% csrf_token %} {{ form.as_p }}
+        <button type="submit" class="btn btn-primary w-50">Simpan</button>
+        <a href="{% url 'profile' %}" class="btn btn-secondary w-20">Kembali</a>
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock %}

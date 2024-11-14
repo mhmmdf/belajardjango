@@ -19,8 +19,12 @@ def contact(request):
 
 
 def guest(request):
-    posts = Post.objects.all().order_by('-created_at')
+    posts = Post.objects.all().order_by('-created_at')[:9]
     return render(request, 'news.html', {'posts':posts})
+
+def all_posts(request):
+    posts = Post.objects.all().order_by('-created_at')
+    return render(request, 'all_posts.html', {'posts':posts})
 
 
 def detail(request, slug):
@@ -136,16 +140,24 @@ def delete_post(request, pk):
 
 
 def signup_view(request):
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            return redirect('home')
+        else:
+            return redirect('guest')
+    
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Akun {username} berhasil dibuat! Silakan login.')
-            return redirect('login')
+            return redirect('signup')
         else:
-            # Jika form tidak valid, tampilkan pesan error
-            messages.error(request, 'Terjadi kesalahan. Silakan periksa form dan coba lagi.')
+            # Jika form tidak valid, tampilkan pesan error untuk setiap field
+            for field in form:
+                for error in field.errors:
+                    messages.error(request, f'{field.label}: {error}')  # Menampilkan error spesifik field
             print(form.errors)  # Mencetak error form ke console untuk debugging
     else:
         form = SignUpForm()
@@ -153,6 +165,12 @@ def signup_view(request):
 
 
 def login_view(request):
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            return redirect('home')
+        else:
+            return redirect('guest')
+    
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -161,7 +179,6 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, f'Selamat datang, {username}!')
                 
                 if user.is_staff:
                     next_url = request.GET.get('next')
@@ -173,8 +190,8 @@ def login_view(request):
                     if next_url:
                         return redirect(next_url)
                     return redirect('guest')
-            else:
-                messages.error(request, 'Username atau password salah.')
+        else:
+            messages.error(request, 'Username atau password salah.')
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})

@@ -22,6 +22,7 @@ from django.conf.urls import handler404
 
 urlpatterns = [
     path('', views.guest, name='guest'),
+    path('all_posts/', views.all_posts, name='all_posts'),
     path('berita', views.berita, name='berita'),
     path('bursa_transfer', views.bursa_transfer, name='bursa_transfer'),
     path('tips', views.tips, name='tips'),

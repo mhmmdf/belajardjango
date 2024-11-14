@@ -1,5 +1,11 @@
 {% extends 'base.html' %} {% block content %}
 <div class="container mt-5">
+  <div class="">
+    <a href="{% url 'guest' %}" class="text-secondary" style="text-decoration: none">
+      <i class="fas fa-arrow-left"></i> Kembali ke beranda</a
+    >
+  </div>
+  <br />
   <!-- Bagian Konten Utama -->
   <h1 class="mb-4">{{ posts.title }}</h1>
   <p class="text-muted">Diposting pada: {{ posts.created_at|date:"d M Y" }}</p>
@@ -12,7 +18,9 @@
 
   <hr />
   <h3>Komentar</h3>
-  {% for comment in comments %}
+  {% if messages %} {% for message in messages %} {% if message.tags == "success" %}
+  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">{{ message }}</div>
+  {% endif %} {% endfor %} {% endif %} {% for comment in comments %}
   <div>
     Komentar dari: <strong>{{ comment.user.username }}</strong>
     <p>{{ comment.content }}</p>
@@ -22,16 +30,24 @@
   {% empty %}
   <p>Belum ada komentar.</p>
   {% endfor %} {% if user.is_authenticated %}
-  <h3>Tulis Komentar</h3>
+  <h3>Komentari Postingan</h3>
   <form method="post">
-    {% csrf_token %} {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Kirim</button>
+    {% csrf_token %}
+    <div class="mb-3">
+      <textarea
+        class="form-control"
+        id="content"
+        name="content"
+        rows="3"
+        placeholder="Tulis Komentar Anda"
+        required
+      ></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Kirim</button>
   </form>
   {% else %}
   <p>Silakan <a href="{% url 'login' %}?next={{ request.path}}">login</a> untuk berkomentar.</p>
   {% endif %}
-
-  <a href="{% url 'guest' %}" class="btn btn-secondary">Kembali</a>
 
   <!-- Bagian Saran Artikel -->
   <hr class="my-5" />

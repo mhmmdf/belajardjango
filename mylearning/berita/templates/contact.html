@@ -4,53 +4,35 @@
 
 <!-- Contact Form -->
 <div class="container mt-4">
-  <div class="contact-form">
-    <h3 class="text-center mb-4">Kirim Pesan</h3>
-    {% if messages %} {% for message in messages %}
-    <div class="alert alert-success">{{ message }}</div>
-    {% endfor %} {% endif %}
-    <form method="post" action="">
-      {% csrf_token %}
-      <div class="mb-3">
-        <label for="name" class="form-label">Nama</label>
-        <input type="text" class="form-control" id="name" name="fullname" placeholder="Nama Anda" required />
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="email@example.com" required />
-      </div>
-      <div class="mb-3">
-        <label for="message" class="form-label">Pesan</label>
-        <textarea
-          class="form-control"
-          id="message"
-          name="message"
-          rows="5"
-          placeholder="Tulis pesan Anda"
-          required
-        ></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary w-100">Kirim</button>
-    </form>
-  </div>
-</div>
-
-<!-- Contact Info Section -->
-<div class="container mt-4">
-  <div class="contact-info">
-    <div class="row text-center">
-      <div class="col-4">
-        <i class="bi bi-geo-alt-fill"></i>
-        <p>Bogor, Indonesia</p>
-      </div>
-      <div class="col-4">
-        <i class="bi bi-envelope-fill"></i>
-        <p>arzy@mobagaming.com</p>
-      </div>
-      <div class="col-4">
-        <i class="bi bi-telephone-fill"></i>
-        <p>+62 821 1407 6740</p>
-      </div>
+  <div class="contact-form card shadow-lg rounded-3 mx-auto" style="max-width: 400px">
+    <div class="card-body p-4">
+      <h3 class="text-center mb-4">Kirim Pesan</h3>
+      {% if messages %} {% for message in messages %}
+      <div class="alert alert-success">{{ message }}</div>
+      {% endfor %} {% endif %}
+      <form method="post" action="">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="name" class="form-label">Nama</label>
+          <input type="text" class="form-control" id="name" name="fullname" placeholder="Nama Anda" required />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="email@example.com" required />
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Pesan</label>
+          <textarea
+            class="form-control"
+            id="message"
+            name="message"
+            rows="5"
+            placeholder="Tulis pesan Anda"
+            required
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Kirim</button>
+      </form>
     </div>
   </div>
 </div>
